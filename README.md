@@ -6,7 +6,7 @@ This project is a calendar application that will allow the user to enter and sav
 
 Link to application:
 
-<!-- add link to deployed site -->
+https://kevinsmithseven.github.io/work-day-scheduler/
 
 ## Usage
 

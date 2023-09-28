@@ -1,15 +1,14 @@
-// Wrap all code that interacts with the DOM in a call to jQuery to ensure that
-// the code isn't run until the browser has finished rendering all the elements
-// in the html.
 
 // $(function () {
-// DOM interaction code goes here
+
 
 // DOM reference elements
 var dateDisplayEl = $('#currentDay');
 
 // Global variables
 var currentHour = parseInt(dayjs().format('HH'));
+
+// Array to establish hour, hour display time and unique hour ID
 
 var timeBlockArray = [
   {
@@ -59,6 +58,8 @@ var timeBlockArray = [
   }
 ]
 
+// Function to dynamically create HTML blocks, and retrieve user input into local storage
+
 function displayTimeBlock() {
   $("#time-block-section").empty();
 
@@ -80,6 +81,9 @@ function displayTimeBlock() {
   }
 }
 
+
+// Store input in local storage
+
 function saveTask(hour) {
   var key = `text-${hour}`
   var task = $(`#${key}`).val();
@@ -88,31 +92,7 @@ function saveTask(hour) {
 }
 
 
-// TODO: Add a listener for click events on the save button. This code should
-// use the id in the containing time-block as a key to save the user input in
-// local storage. HINT: What does `this` reference in the click listener
-// function? How can DOM traversal be used to get the "hour-x" id of the
-// time-block containing the button that was clicked? How might the id be
-// useful when saving the description in local storage?
-
-//* is this where I need to dynamically create the elements
-//* how do I start at 0900 when dynamically creating the hour divs?
-//* need to add listener for when they click inside of textBlock and capture value
-//* function to store data in local storage
-
-// buttonEl.on('click', storeData) //*storeData not defined yet
-
-
-
-
-
-// TODO: Add code to apply the past, present, or future class to each time
-// block by comparing the id to the current hour. HINTS: How can the id
-// attribute of each time-block be used to conditionally add or remove the
-// past, present, and future classes? How can Day.js be used to get the
-// current hour in 24-hour time?
-
-//* need some conditional statements to compare currentHour to past, present, or future div class
+// Determines which class to assign in the displayTimeBlock function
 
 function timeOfDayClass(hour) {
   if (hour < currentHour) {
@@ -126,35 +106,11 @@ function timeOfDayClass(hour) {
 
 
 
-// TODO: Add code to get any user input that was saved in localStorage and set
-// the values of the corresponding textarea elements. HINT: How can the id
-// attribute of each time-block be used to do this?
-
-//* use unique hour-x id's to help capture value of text entered
-
-
-
-// TODO: Add code to display the current date in the header of the page.
-
-// displays current date at top of page
+// Displays current date at top of page
 function showDate() {
   var currentDay = dayjs().format('dddd MMMM D hh:MM A');
   dateDisplayEl.text(currentDay);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 showDate();

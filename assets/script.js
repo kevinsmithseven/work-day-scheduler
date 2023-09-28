@@ -1,7 +1,4 @@
 
-// $(function () {
-
-
 // DOM reference elements
 var dateDisplayEl = $('#currentDay');
 
@@ -58,11 +55,12 @@ var timeBlockArray = [
   }
 ]
 
+
+
 // Function to dynamically create HTML blocks, and retrieve user input into local storage
 
 function displayTimeBlock() {
   $("#time-block-section").empty();
-
   for (var block of timeBlockArray) {
     var timeClass = timeOfDayClass(block.hour);
     var key = `text-${block.hour}`;
@@ -85,6 +83,7 @@ function displayTimeBlock() {
 // Store input in local storage
 
 function saveTask(hour) {
+  console.log('saveTask called with hour:', hour);
   var key = `text-${hour}`
   var task = $(`#${key}`).val();
   localStorage.setItem(key, task);
@@ -108,7 +107,7 @@ function timeOfDayClass(hour) {
 
 // Displays current date at top of page
 function showDate() {
-  var currentDay = dayjs().format('dddd MMMM D hh:MM A');
+  var currentDay = dayjs().format('dddd MMMM D');
   dateDisplayEl.text(currentDay);
 }
 
@@ -116,4 +115,5 @@ function showDate() {
 showDate();
 setInterval(showDate, 1000);
 displayTimeBlock()
-// })
+
+

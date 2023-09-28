@@ -9,19 +9,83 @@
 var dateDisplayEl = $('#currentDay');
 
 // Global variables
-var currentHour = dayjs().format('HH');
+var currentHour = parseInt(dayjs().format('HH'));
 
-//* can i use .attr to add the unique hour-x id to these?
-var hourDivPast = $('<div class="row time-block past">') 
-var hourDivPresent = $('<div class="row time-block present">')
-var hourDivFuture = $('<div class="row time-block future">')
+var timeBlockArray = [
+  {
+    "hour": 9,
+    "displayText": "9 AM",
+    "id": "hour-9"
+  },
+  {
+    "hour": 10,
+    "displayText": "10 AM",
+    "id": "hour-10"
+  },
+  {
+    "hour": 11,
+    "displayText": "11 AM",
+    "id": "hour-11"
+  },
+  {
+    "hour": 12,
+    "displayText": "12 PM",
+    "id": "hour-12"
+  },
+  {
+    "hour": 13,
+    "displayText": "1 PM",
+    "id": "hour-13"
+  },
+  {
+    "hour": 14,
+    "displayText": "2 PM",
+    "id": "hour-14"
+  },
+  {
+    "hour": 15,
+    "displayText": "3 PM",
+    "id": "hour-15"
+  },
+  {
+    "hour": 16,
+    "displayText": "4 PM",
+    "id": "hour-16"
+  },
+  {
+    "hour": 17,
+    "displayText": "5 PM",
+    "id": "hour-17"
+  }
+]
 
-//* how do I enter text into the below, i.e. 9AM, 10AM, etc?
-var hourBlock = $('<div class=col-2 col-md-1 hour text-center py-3">')
-var textBlock = $('<textarea class=col-8 col-md-10 description" rows="3">')
-var button = $('<button class="btn saveBtn col-2 col-md-1" aria-label="save">')
-var icon = $('<i class="fas fa-save" aria-hidden="true">')
+function displayTimeBlock() {
+  $("#time-block-section").empty();
 
+  for (var block of timeBlockArray) {
+    var timeClass = timeOfDayClass(block.hour);
+    var key = `text-${block.hour}`;
+    var task = localStorage.getItem(key) || "";
+
+    var html = `
+  <div id="${block.id}" class="row time-block ${timeClass}">
+    <div class="col-2 col-md-1 hour text-center py-3">${block.displayText}</div>
+    <textarea id="${key}" class="col-8 col-md-10 description" rows="3">${task}</textarea>
+    <button class="btn saveBtn col-2 col-md-1" aria-label="save" onclick="saveTask(${block.hour})">
+      <i class="fas fa-save" aria-hidden="true"></i>
+    </button>
+  </div>
+  `
+    $("#time-block-section").append(html);
+  }
+}
+
+function saveTask(hour) {
+  var key = `text-${hour}`
+  var task = $(`#${key}`).val();
+  localStorage.setItem(key, task);
+  displayTimeBlock();
+}
 
 
 // TODO: Add a listener for click events on the save button. This code should
@@ -34,7 +98,11 @@ var icon = $('<i class="fas fa-save" aria-hidden="true">')
 //* is this where I need to dynamically create the elements
 //* how do I start at 0900 when dynamically creating the hour divs?
 //* need to add listener for when they click inside of textBlock and capture value
-//* function to store data in local storage - do I need to retrieve or empty storage on page load/reload?
+//* function to store data in local storage
+
+// buttonEl.on('click', storeData) //*storeData not defined yet
+
+
 
 
 
@@ -44,7 +112,19 @@ var icon = $('<i class="fas fa-save" aria-hidden="true">')
 // past, present, and future classes? How can Day.js be used to get the
 // current hour in 24-hour time?
 
-//* need some conditional statements to compare currentHour to pas, present, or future div class
+//* need some conditional statements to compare currentHour to past, present, or future div class
+
+function timeOfDayClass(hour) {
+  if (hour < currentHour) {
+    return "past"
+  } else if (hour === currentHour) {
+    return "present"
+  } else {
+    return "future"
+  }
+}
+
+
 
 // TODO: Add code to get any user input that was saved in localStorage and set
 // the values of the corresponding textarea elements. HINT: How can the id
@@ -58,7 +138,7 @@ var icon = $('<i class="fas fa-save" aria-hidden="true">')
 
 // displays current date at top of page
 function showDate() {
-  var currentDay = dayjs().format('dddd MMMM D');
+  var currentDay = dayjs().format('dddd MMMM D hh:MM A');
   dateDisplayEl.text(currentDay);
 }
 
@@ -79,4 +159,5 @@ function showDate() {
 
 showDate();
 setInterval(showDate, 1000);
+displayTimeBlock()
 // })
